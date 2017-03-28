@@ -2,13 +2,17 @@
 #include <stdio.h>
 #include <dados.h>
 
+/*
+	Felipe Alves Siqueira
+	NUSP 9847706
+*/
+
 typedef struct {
 	char fname[SIZE_FNAME], 
 	lname[SIZE_LNAME],
 	email[SIZE_EMAIL];
 	int age;
 } REG_PERSON;
-
 
 void func_help(){
 	char const * const HELP [] = {

@@ -2,6 +2,11 @@
 #ifndef __DADOS_H_
 #define __DADOS_H_
 
+/*
+	Felipe Alves Siqueira
+	NUSP 9847706
+*/
+
 #define SIZE_FNAME 15
 #define SIZE_LNAME 15
 #define SIZE_EMAIL 25

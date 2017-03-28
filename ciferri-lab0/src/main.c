@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <dados.h>
 
+/*
+	Felipe Alves Siqueira
+	NUSP 9847706
+*/
+
 int main(int argc, char const *argv[]){
 	char op;
 	int param;
