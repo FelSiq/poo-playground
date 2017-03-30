@@ -6,7 +6,7 @@ import java.util.Calendar;
 * Auxiliary class, made for the main class of Bozo' game. Rolls dice.
 * @imports java.util.Scanner (for input processing) and java.util.Calendar (for pseudo-random number generation)
 * @package BozoPackage
-* @author judging by the "toString" method, definitely is Bob Ross.
+* @author  Felipe Alves Siqueira (9847706) e Gabriel Cyrillo (9763022)
 */
 
 public class RollDice{

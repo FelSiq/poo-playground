@@ -5,7 +5,7 @@ import java.util.Scanner;
 * Auxiliary class, made for the main class of Bozo' game. Rolls dice.
 * @imports java.util.Scanner (for input processing).
 * @package BozoPackage
-* @author A barkfull dog.
+* @author  Felipe Alves Siqueira (9847706) e Gabriel Cyrillo (9763022)
 */
 
 public class Score{

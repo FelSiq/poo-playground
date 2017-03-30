@@ -3,7 +3,7 @@ package BozoPackage;
 /**
 * Auxiliary class, made for the main class of Bozo' game. It's a n-sided die.
 * @package BozoPackage
-* @author A bored githubber.
+* @author  Felipe Alves Siqueira (9847706) e Gabriel Cyrillo (9763022)
 */
 
 class Die{

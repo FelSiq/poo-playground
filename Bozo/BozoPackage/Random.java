@@ -5,7 +5,7 @@ import java.util.Calendar;
 * A little prototype of a Random class, which, of course, has methods to generate pseudorandom values.
 * @imports java.util.Calendar (for pseudo-random number generation)
 * @package BozoPackage
-* @autor Santa Claus and its little elfs.
+* @autor  Felipe Alves Siqueira (9847706) e Gabriel Cyrillo (9763022)
 */
 
 class Random{

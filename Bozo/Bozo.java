@@ -3,7 +3,7 @@ import BozoPackage.*;
 /**
 * Main class of Bozo' game.
 * @imports BozoPackage
-* @author Guess who?
+* @author Felipe Alves Siqueira (9847706) e Gabriel Cyrillo (9763022)
 */
 
 class Bozo{
