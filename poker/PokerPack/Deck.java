@@ -1,12 +1,15 @@
+package PokerPack;
 import java.util.Random;
 import java.util.Calendar;
 import java.util.Arrays;
+
+
 /**
 * Auxiliary class for Poker main class.
 * @import java.util.Random, java.util.Calendar, java.util.Arrays
-* @author Guess.
+* @author Felipe Alves Siqueira 9847706
 */
-class Deck{
+public class Deck{
 	static final byte maxCardNum = 52;
 	private final byte cardNum;
 	private Card lastCard; 

@@ -1,8 +1,9 @@
+import PokerPack.*;
 import java.util.Scanner;
 
 /**
 * This is the game main Class.
-* @author A IME lost student.
+* @author Felipe Alves Siqueira 9847706
 */
 class Poker{
 	static final int initCredit = 200;
@@ -12,12 +13,17 @@ class Poker{
 	private final Card [] myHand;
 	private int credits;
 
-	Poker(){
+	public Poker(){
 		myHand = new Card[numOfCards];
 		myDeck = new Deck();
 		credits = initCredit;
 	}
 
+	/**
+	* Add the given value to the user credit wallet. 
+	* @Throws IllegalArgumentException, is given parameter is negative.
+	* @Return True, if given integer is a positive integer. False otherwise.
+	*/
 	private boolean payMoreCredits(int moreCredits) throws IllegalArgumentException{
 		if (moreCredits < 0)
 			throw new IllegalArgumentException("What? No negative values allowed (keep playing to do so)!!");
@@ -25,6 +31,12 @@ class Poker{
 		return (moreCredits > 0);
 	}
 
+	/**
+	* Remove the given value to the user credit wallet. 
+	* @Throws IllegalArgumentException, is given parameter is negative. 
+	* OutOfCredits, if user have less credit than the given quantity.
+	* @Return True, if given integer is a positive integer. False otherwise.
+	*/
 	private boolean betCredits(int howMany) throws IllegalArgumentException, OutOfCredits{
 		if (howMany < 0)
 			throw new IllegalArgumentException("Are you SERIOUS? You CAN NOT bet negative values!");
@@ -34,6 +46,9 @@ class Poker{
 		return (howMany >= 0);
 	}
 
+	/**
+	* This is where the user interface take place.
+	*/
 	public static void main(String[] args) {
 		Poker game = new Poker();
 		Scanner myInput = new Scanner(System.in);
@@ -75,6 +90,7 @@ class Poker{
 				}
 			}
 
+			myInput.skip("\n");
 			//Card show Section
 
 			//Card change section
@@ -82,14 +98,14 @@ class Poker{
 				System.out.println(game.myDeck.toString(game.myHand));
 				System.out.print("> Chance "+ (1 + i) +"/"+changeTimes+" for CHANGE your hand.\n> Type the index of the cards, or press ENTER to continue.\n> ");
 				
-				stringAux = myInput.next().split(" ");
-
+				stringAux = myInput.nextLine().split(" ");
 
 				for(int j = 0; j < stringAux.length; ++j){
 					try {
 						aux = Integer.parseInt(stringAux[j]);
-						game.myDeck.giveCardBack(game.myHand[aux]);
+						Card cardHolder = game.myHand[aux];
 						game.myHand[aux] = game.myDeck.draw();
+						game.myDeck.giveCardBack(cardHolder);
 					} catch (ArrayIndexOutOfBoundsException aioob){
 						System.out.println("That was a invalid index!");
 					} catch (DeckRunOut dro){
@@ -99,11 +115,12 @@ class Poker{
 			}
 			System.out.println("> FINAL HAND:");
 			System.out.println(game.myDeck.toString(game.myHand));
-			//Reward calculus section
+			//Reward calculus section(send hand to score module)
 
 			//Repeat section
 			System.out.print("> Do you want to WIN MORE?!?! (type \'n\' to stop)\n> ");
 			FLAG = (!myInput.next().toLowerCase().equals("n"));
+			myInput.reset();
 
 			//Steal-your-money section
 			if (FLAG){
