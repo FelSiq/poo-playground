@@ -49,9 +49,9 @@ class Deck{
 	/**
 	* Draw a random Card from Deck, from all remaining possibilities. 
 	* @Return a Card class object, with random Naipe and Value, always different from all others drew previously. 
-	* @Throws DeckRunOut, if no card is available to draw. Exception, for unknown events.
+	* @Throws DeckRunOut, if no card is available to draw.
 	*/
-	public Card draw() throws DeckRunOut, Exception{
+	public Card draw() throws DeckRunOut{
 		if (hasCards()){
 			Random myRand = new Random(Calendar.getInstance().getTimeInMillis());
 			int newIndex;
@@ -67,9 +67,8 @@ class Deck{
 			} catch (Exception e){
 				System.out.println("Something went wrong with random seed generation or card creation.");
 				e.printStackTrace();
+				return null;
 			}
-
-			throw new Exception("A unknown error occurred while drawing a card."); 
 		} else throw new DeckRunOut();
 	}
 
@@ -90,8 +89,8 @@ class Deck{
 	}
 
 	/**
-	*
-	* @Return
+	* Return a concatenated single String of toString function of a full hand of Cards.
+	* @Return String with all cards of the given Hand, concatenated.
 	*/
 	public String toString(Card [] myHand){
 		String result = new String(), aux;
@@ -103,13 +102,13 @@ class Deck{
 				slices[i] = aux.split("\n");
 		}
 
-		for (int i = 0; i < myHand.length; result += "\n", ++i)
-			for (int j = 0; j < 9; ++j)
+		for (int i = 0; i < 9; result += "\n", ++i)
+			for (int j = 0; j < myHand.length; ++j)
 				result += " " + slices[j][i];
 
 
 		for (int i = 0; i < myHand.length; ++i)
-			result += ("     " + i + "    ");
+			result += ("       " + i + "       ");
 
 		return result + "\n";
 	}
