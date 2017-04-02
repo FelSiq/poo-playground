@@ -111,7 +111,7 @@ public class Deck{
 
 
 		for (int i = 0; i < myHand.length; ++i)
-			result += ("       " + i + "       ");
+			result += ("      [" + i + "]      ");
 
 		return result + "\n";
 	}
