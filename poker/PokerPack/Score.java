@@ -1,5 +1,6 @@
 package PokerPack;
 import java.lang.Thread;
+import java.util.Arrays;
 
 /*
 * 				ISTO É SÓ UM EXPERIMENTO DE MULTITHREADING!
@@ -8,7 +9,7 @@ import java.lang.Thread;
 /**
 * Auxiliary class, made for the main class of Poker game.
 * @imports java.util.Scanner (for input processing).
-* @package PokerPackage, java.lang.Thread
+* @package PokerPackage, java.lang.Thread, java.util.Arrays
 * @author  Felipe Alves Siqueira (9847706)
 */
 
@@ -29,34 +30,64 @@ public class Score{
 		static final int MULT_SFLUSH = 100;
 		static final int MULT_RSFLUSH = 200;
 
+		private int [] requestFreqVec(Card [] myHand){
+			int [] freqVec = new int[Card.valueNum];
+			for (int i = 0; i < myHand.length; ++i)
+				++freqVec[myHand[i].getValue()];
+
+			/*System.out.print("Freqvector: ");
+			for(int k : freqVec)
+				System.out.print(k + " ");
+			System.out.print("\n");*/
+
+			return freqVec;
+		}
+
+		private boolean checkFreq(Card [] myHand, int val, int quant){
+			int [] freqVec = requestFreqVec(myHand);
+			int counter = 0;
+			for (int i : freqVec)
+				counter += (i >= val ? 1 : 0);
+			return (counter >= quant);
+		}
+
+		private boolean checkSeq(Card [] myHand){
+			Arrays.sort(myHand);
+			boolean FLAG = true;
+			for (int i = 1; FLAG && i < myHand.length; ++i)
+				FLAG = ((myHand[0].getValue() + i) == myHand[i].getValue());
+			return FLAG;
+		}
+
+		private boolean checkSuit(Card [] myHand){
+			int counter = 1;
+			for (Card c : myHand)
+				counter += (c.getSuit() == myHand[0].getSuit() ? 1 : 0);
+			return (counter == myHand.length);
+		}
+
 		private int checkTwoPairs(Card [] myHand){
-			System.out.println("1");
-			return 0;
+			return (checkFreq(myHand, 2, 2) ? 1 : 0);
 		}
 
 		private int checkTrio(Card [] myHand){
-			System.out.println("2");
-			return 0;
+			return (checkFreq(myHand, 3, 1) ? 1 : 0);
 		}
 
 		private int checkStraight(Card [] myHand){
-			System.out.println("3");
-			return 0;
+			return (checkSeq(myHand) && !checkSuit(myHand) ? 1 : 0);
 		}
 
 		private int checkFlush(Card [] myHand){
-			System.out.println("4");
-			return 0;
+			return checkSuit(myHand);
 		}
 
 		private int checkFullHand(Card [] myHand){
-			System.out.println("5");
-			return 0;
+			return (checkTwoPairs(myHand) + checkTrio(myHand))/2;
 		}
 
 		private int checkQuadra(Card [] myHand){
-			System.out.println("6");
-			return 0;
+			return (checkFreq(myHand, 4, 1) ? 1 : 0);
 		}
 
 		private int checkSFlush(Card [] myHand){
@@ -65,8 +96,7 @@ public class Score{
 		}
 
 		private int checkRSFlush(Card [] myHand){
-			System.out.println("8");
-			return 0;
+			return ((myHand[0].getValue() >= 10) && checkSeq(myHand) && checkSuit(myHand) ? 1 : 0);
 		}
 
 		@Override
@@ -86,6 +116,7 @@ public class Score{
 		}
 
 		ScoreComputer(Card [] refMyHand, int refThreadID, int [] refResult){
+			requestFreqVec(refMyHand);
 			myHand = refMyHand;
 			threadID = refThreadID;
 			result = refResult;
