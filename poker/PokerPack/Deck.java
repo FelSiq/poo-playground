@@ -115,21 +115,4 @@ public class Deck{
 
 		return result + "\n";
 	}
-
-	/**
-	* @Debug This method exists only for DEBUG purposes.
-	*/
-	public static void main(String[] args) {
-		//Debug hell
-		Deck myDeck = new Deck();
-		try {
-			for (int i = 0; i <= Deck.maxCardNum; ++i)
-				System.out.println(myDeck.draw().toString());
-		} catch (DeckRunOut dro){
-			System.out.println();
-		} catch (Exception e){	
-			System.out.println("No idea of what actually happened (jk).");
-			e.printStackTrace();
-		}
-	}
 }

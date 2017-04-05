@@ -2,15 +2,11 @@ package PokerPack;
 import java.lang.Thread;
 import java.util.Arrays;
 
-/*
-* 				ISTO É SÓ UM EXPERIMENTO DE MULTITHREADING!
-*/
-
 /**
 * Auxiliary class, made for the main class of Poker game.
 * @imports java.util.Scanner (for input processing).
 * @package PokerPackage, java.lang.Thread, java.util.Arrays
-* @author  Felipe Alves Siqueira (9847706)
+* @author  Felipe Alves Siqueira (9847706) and Rodolfo Coelho Dalapicola (8006838)
 */
 
 public class Score{
@@ -158,20 +154,5 @@ public class Score{
 				return result[i];
 		}
 		return 0;
-	}
-
-	public static void main(String[] args) {
-		//Debug hell
-		Score sc = new Score();
-
-		Card [] myHand = new Card[5];
-		Deck deck = new Deck();
-		for (int i = 0; i < 5; ++i)
-			try {
-				myHand[i] = deck.draw();
-			} catch (DeckRunOut e){}
-
-		System.out.println(deck.toString(myHand));
-		System.out.println(sc.compute(myHand));
 	}
 }

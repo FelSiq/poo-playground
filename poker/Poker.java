@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 /**
 * This is the game main Class.
-* @author Felipe Alves Siqueira 9847706
+* @author Felipe Alves Siqueira 9847706 and Rodolfo Coelho Dalapicola 8006838 
 */
 class Poker{
 	static final int initCredit = 200;
@@ -11,13 +11,15 @@ class Poker{
 	static final int changeTimes = 2; 
 	private final Deck myDeck;
 	private final Card [] myHand;
-	private final Score myScore;
+	private final Score myScore; //Multithreading score computation
+	private final Placar myPlacar; //Common score computation
 	private int credits;
 
 	public Poker(){
 		myHand = new Card[numOfCards];
 		myDeck = new Deck();
 		myScore = new Score();
+		myPlacar = new Placar();
 		credits = initCredit;
 	}
 
@@ -192,10 +194,20 @@ class Poker{
 
 	/**
 	* Compute the current card hand value, and multiply that parameter to the player current bet.
+	* Uses multithreading.
 	* @Return Bet value multiplied by the fixed hand value.  
 	*/
-	public int compute(int roundBet){
+	public int computeThreads(int roundBet){
 		return roundBet * myScore.compute(myHand);
+	}
+
+	/**
+	* Compute the current card hand value, and multiply that parameter to the player current bet.
+	* DO not uses multithreading.
+	* @Return Bet value multiplied by the fixed hand value.  
+	*/
+	public int computeCommon(int roundBet){
+		return roundBet * myPlacar.add(roundBet, Card.handValue(myHand));
 	}
 
 	/**
@@ -224,7 +236,8 @@ class Poker{
 
 			System.out.println("> FINAL HAND:\n" + game.toString());
 			//Reward calculus section(send hand to score module)
-			roundReward = game.compute(roundBet);
+			roundReward = game.computeThreads(roundBet);
+			//int roundRewardAux = game.computeCommon(roundBet);
 
 			if(!game.payMoreCredits(roundReward))
 				System.out.println("> Bad luck this time, you win nothing! Keep trying!");

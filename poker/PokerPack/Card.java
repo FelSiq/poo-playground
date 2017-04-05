@@ -39,6 +39,17 @@ public class Card{
 	}
 
 	/**
+	* Get a array of the imaginary Indexes of a full hand of cards (CardValue + 13*CardSuit).
+	* @Return Integer array of card indexes.
+	*/
+	static public int [] handValue(Card [] myHand){
+		int [] indexes = new int[myHand.length];
+		for (int i = 0; i < myHand.length; ++i)
+			indexes[i] = (myHand[i].getValue() + Card.valueNum * myHand[i].getSuit());
+		return indexes;
+	}
+
+	/**
 	* Return a string with current the card status representation (value and suit).
 	* @Throws IllegalArgumentException, if NewNaipe is out of [0, 4) range and/or newValue is out of [0, 13).
 	* @Override java.util.lang.toString()
