@@ -34,12 +34,6 @@ public class Score{
 			int [] freqVec = new int[Card.valueNum];
 			for (int i = 0; i < myHand.length; ++i)
 				++freqVec[myHand[i].getValue()];
-
-			/*System.out.print("Freqvector: ");
-			for(int k : freqVec)
-				System.out.print(k + " ");
-			System.out.print("\n");*/
-
 			return freqVec;
 		}
 
@@ -51,8 +45,20 @@ public class Score{
 			return (counter >= quant);
 		}
 
-		private boolean checkSeq(Card [] myHand){
-			Arrays.sort(myHand);
+		private boolean checkSeq(Card [] myOldHand){
+			Card [] myHand = new Card[myOldHand.length];
+			for (int i = 0; i < myHand.length; ++i)
+				myHand[i] = myOldHand[i]; 
+			//Arrays.sort(myHand);
+			boolean bubbleFlag = true;
+			for (int i = 1; bubbleFlag && i < myHand.length; bubbleFlag = false, ++i)
+				for (int j = 1; j < (myHand.length - 1); ++j)
+					if (myHand[j].getValue() > myHand[j + 1].getValue()){
+						Card aux = myHand[j];
+						myHand[j] = myHand[j + 1];
+						myHand[j + 1] = aux;
+						bubbleFlag = true;
+					}
 			boolean FLAG = true;
 			for (int i = 1; FLAG && i < myHand.length; ++i)
 				FLAG = ((myHand[0].getValue() + i) == myHand[i].getValue());
@@ -60,10 +66,10 @@ public class Score{
 		}
 
 		private boolean checkSuit(Card [] myHand){
-			int counter = 1;
+			int counter = 0;
 			for (Card c : myHand)
 				counter += (c.getSuit() == myHand[0].getSuit() ? 1 : 0);
-			return (counter == myHand.length);
+			return (counter >= myHand.length);
 		}
 
 		private int checkTwoPairs(Card [] myHand){
@@ -79,7 +85,7 @@ public class Score{
 		}
 
 		private int checkFlush(Card [] myHand){
-			return checkSuit(myHand);
+			return (checkSuit(myHand) ? 1 : 0);
 		}
 
 		private int checkFullHand(Card [] myHand){
@@ -91,32 +97,32 @@ public class Score{
 		}
 
 		private int checkSFlush(Card [] myHand){
-			System.out.println("7");
-			return 0;
+			return (((checkStraight(myHand) >= 1 ? true : false) && checkSuit(myHand)) ? 1 : 0);
 		}
 
 		private int checkRSFlush(Card [] myHand){
-			return ((myHand[0].getValue() >= 10) && checkSeq(myHand) && checkSuit(myHand) ? 1 : 0);
+			return (checkSeq(myHand) && (myHand[0].getValue() >= 10) && checkSuit(myHand) ? 1 : 0);
 		}
 
+		
 		@Override
 		public void run(){
 			switch (threadID){
-				case 0: result[0] = MULT_TWOPAIRS * checkTwoPairs(myHand); break;
-				case 1: result[0] = MULT_TRIO * checkTrio(myHand); break;
-				case 2: result[0] = MULT_STRAIGHT * checkStraight(myHand); break;
-				case 3: result[0] = MULT_FLUSH * checkFlush(myHand); break;
+				case 0: result[0] += MULT_TWOPAIRS * checkTwoPairs(myHand); break;
+				case 1: result[1] += MULT_TRIO * checkTrio(myHand); break;
+				case 2: result[2] += MULT_STRAIGHT * checkStraight(myHand); break;
+				case 3: result[3] += MULT_FLUSH * checkFlush(myHand); break;
 			}
 			switch (threadID){
-				case 0: result[0] = MULT_FULLHAND * checkFullHand(myHand); break;
-				case 1: result[0] = MULT_QUADRA * checkQuadra(myHand); break;
-				case 2: result[0] = MULT_SFLUSH * checkSFlush(myHand); break;
-				case 3: result[0] = MULT_RSFLUSH * checkRSFlush(myHand); break;
+				case 0: result[4] += MULT_FULLHAND * checkFullHand(myHand); break;
+				case 1: result[5] += MULT_QUADRA * checkQuadra(myHand); break;
+				case 2: result[6] += MULT_SFLUSH * checkSFlush(myHand); break;
+				case 3: result[7] += MULT_RSFLUSH * checkRSFlush(myHand); break;
 			}
 		}
 
 		ScoreComputer(Card [] refMyHand, int refThreadID, int [] refResult){
-			requestFreqVec(refMyHand);
+			//requestFreqVec(refMyHand);
 			myHand = refMyHand;
 			threadID = refThreadID;
 			result = refResult;
@@ -133,7 +139,7 @@ public class Score{
 			throw new NullPointerException("Your hand does not exists?!");
 		Thread [] myThreads = new Thread[THREAD_NUM];
 
-		int [] result = new int[1];
+		int [] result = new int[8];
 		
 		for (byte i = 0; i < myThreads.length; ++i){
 			ScoreComputer sc = new ScoreComputer(myHand, i % myThreads.length, result);
@@ -146,7 +152,12 @@ public class Score{
 			catch (InterruptedException ie){
 				System.out.println("Something went wrong on joining Threads.");
 			}
-		return result[0];
+
+		for (int i = (result.length - 1); i >= 0; --i){
+			if (result[i] > 0)
+				return result[i];
+		}
+		return 0;
 	}
 
 	public static void main(String[] args) {

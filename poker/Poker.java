@@ -34,7 +34,7 @@ class Poker{
 	* @Throws IllegalArgumentException, is given parameter is negative.
 	* @Return True, if given integer is a positive integer. False otherwise.
 	*/
-	private boolean payMoreCredits(int moreCredits) throws IllegalArgumentException{
+	public boolean payMoreCredits(int moreCredits) throws IllegalArgumentException{
 		if (moreCredits < 0)
 			throw new IllegalArgumentException("What? No negative values allowed " +
 				"(keep playing to do so)!!");
@@ -48,7 +48,7 @@ class Poker{
 	* OutOfCredits, if user have less credit than the given quantity.
 	* @Return How many credits was bet.
 	*/
-	private int betCredits(int howMany) throws IllegalArgumentException, OutOfCredits{
+	public int betCredits(int howMany) throws IllegalArgumentException, OutOfCredits{
 		if (howMany < 0)
 			throw new IllegalArgumentException("Are you SERIOUS? You CAN'T bet negative values!");
 		if (howMany > credits)
@@ -151,7 +151,6 @@ class Poker{
 					" However, fear not! Try it again!\n> ");
 			}
 		} while(!AUX);
-		credits -= roundBet;
 		return roundBet;
 	}
 
@@ -226,7 +225,8 @@ class Poker{
 			System.out.println("> FINAL HAND:\n" + game.toString());
 			//Reward calculus section(send hand to score module)
 			roundReward = game.compute(roundBet);
-			if(game.payMoreCredits(roundBet))
+
+			if(!game.payMoreCredits(roundReward))
 				System.out.println("> Bad luck this time, you win nothing! Keep trying!");
 			else
 				System.out.println("You did win " + roundReward + 
@@ -243,8 +243,8 @@ class Poker{
 				game.reset();
 				FLAG = game.checkCredits(myInput);
 			} else System.out.println("> Well, well. Then, I guess it's end of the game for us, my friend!");
-			System.out.println("> Final score: " + game.howManyCredits());
 		}
+		System.out.println("> Final score: " + game.howManyCredits());
 		myInput.close();
 	}
 }
